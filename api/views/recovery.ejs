@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CEDOC - Redefinir senha</title>
+    <style>
+        body {
+            margin: 0 !important;
+            font-family: sans-serif, Helvetica, Arial !important;
+        }
+        .header {
+            padding: 10px 20px 10px 20px;
+            margin: 0 0 20px 0;
+            display: block
+        }
+        .container {
+            text-align: center;
+            background: rgba(27, 81, 114, 1);
+            margin: 20px;
+            padding: 15px !important;
+            border-radius: 10px;
+            color: white;
+            -webkit-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.4);
+            -moz-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.4);
+            box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.4);
+        }
+        .button{
+            border-radius: 3px;
+            background: white;
+            color: rgba(27, 81, 114, 1);
+            text-decoration: none;
+            display: block;
+            padding: 15px 50px 15px 50px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .input{
+            background-color: transparent !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            padding: 10px !important;
+            display: block;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 10px;
+            width: calc(100% - 20px) !important;
+            height: auto !important;
+        }
+        .input::placeholder{
+            color: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img style='margin: 0 20px 0 0 ;max-width: 180px; display: inline-block' src='<%= endpoint %>/assets/imgs/cedoc-transparente.png'>
+        <img style='max-width: 70px; display: inline-block' src='<%= endpoint %>/assets/imgs/fapdf-transparente.png'>
+    </div>
+    <% if (success == true) { %>
+    <span id="feedback" style='font-weight: bold; display: none !important; font-size: 16px; text-align: left; margin: 0 20px 0 20px; color: red'></span>
+    <% } %>
+    <div class="container">
+        <% if (success == true) { %>
+            <span style="display: block !important; font-weight: bold; font-size: 22px; text-align: left; margin-bottom: 10px;">Redefinição de senha</span>
+            <!-- <span style="display: block !important; font-size: 15px; text-align: left;margin: 10px 0 10px 0">Digite a nova senha para a conta <%= user.email %></span> -->
+            <input id="pass" class="input" type="password" placeholder="Digite sua nova senha">
+            <input id="confirm-pass" class="input" type="password" placeholder="Confirme sua nova senha">
+            <a onclick="send('<%= endpoint %>', '<%= user.token %>')" href="#" class="button">
+                ENVIAR
+            </a>
+        <% } %>
+        <% if (success == false) { %>
+            <span style="display: block !important; font-weight: bold; font-size: 22px; text-align: left; margin-top: 0px;">Token inválido</span>
+            <span style="display: block !important; font-size: 16px; text-align: left;margin: 10px 0 10px 0">
+                <%= errorMessage %>
+            </span>
+        <% } %>
+    </div>
+    <script>
+        function send(endpoint, token) {
+
+            let pass = document.getElementById('pass').value
+            let confirmPass = document.getElementById('confirm-pass').value
+            let feedback = document.getElementById('feedback')
+            feedback.innerHTML = "";
+            feedback.style.display = "none";
+            feedback.style.color = "red";
+
+            if (pass.length < 4) {
+                feedback.innerHTML = "A nova senha deve conter pelo menos 4 caracteres";
+                feedback.style.display = "block";
+                feedback.style.color = "red";
+                return;
+            }
+
+            if (pass != confirmPass) {
+                feedback.innerHTML = "As senhas não coincidem";
+                feedback.style.display = "block";
+                feedback.style.color = "red";
+                return;
+            }
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    feedback.innerHTML = "Senha alterada com sucesso!";
+                    feedback.style.display = "block";
+                    feedback.style.color = "green";
+                }
+
+                if (this.readyState == 4 && this.status == 401) {
+                    feedback.innerHTML = "Não foi possivel alterar a senha, tente novamente";
+                    feedback.style.display = "block";
+                    feedback.style.color = "red";
+                }
+            };
+            xhttp.open("POST", endpoint + "/usuario/recovery/password", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({
+                t: token,
+                p: pass
+            }));
+        }
+    </script>
+</body>
+</html>

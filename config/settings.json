@@ -1,0 +1,18 @@
+{
+    "deployEndpoint": "http://127.0.0.1:80",
+
+    "secret" : "59hf6g846fbk416gnd84864hj6846s684g4",
+
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "123456",
+    "database": "db_cedoc_fac_bib01",
+
+    "sqlitePath": "db.sqlite3",
+
+    "smtpHost": "smtp.gmail.com",
+    "smtpPort": 465,
+    "smtpSecure": true,
+    "smtpUser": "@gmail.com",
+    "smtpPass": ""
+}

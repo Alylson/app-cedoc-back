@@ -1,0 +1,25 @@
+{
+  "name": "app-cedoc-fac-back-end",
+  "description": "Implementação do Back-end para o App cedoc-fac.",
+  "author": "Pedro Gonçalves <pedro.henrique8864@gmail.com>",
+  "private": true,
+  "version": "0.1.0",
+  "main": "servidor.js",
+  "scripts": {
+    "start": "node servidor.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "nconf": "^0.10.0",
+    "nodemailer": "^4.6.8",
+    "rss-parser": "^3.1.2",
+    "sqlite3": "^4.0.1"
+  },
+  "devDependencies": {}
+}
